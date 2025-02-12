@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 توليد اسم مشروع</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="كومة">
+        </div>
+    </header>
+
+    <section class="service">
+        <h1>🚀 توليد اسم مشروع</h1>
+        <p>ادخل تفاصيل المشروع واحصل على اسم إبداعي يناسبه!</p>
+
+        <form id="projectNameOutputForm">
+            <div class="input-group"><input type="text" id="projectDescription" list="projectDescription-list" placeholder="📝 صف مشروعك بإيجاز"></div>
+<div class="input-group"><input type="text" id="industry" list="industry-list" placeholder="🏷️ مجال المشروع"><datalist id="industry-list"><option value="التجارة"></option><option value="التسويق"></option><option value="التعليم"></option><option value="التكنولوجيا"></option><option value="الصحة"></option></datalist></div>
+<div class="input-group"><input type="text" id="style" list="style-list" placeholder="🎨 نمط الاسم"><datalist id="style-list"><option value="احترافي"></option><option value="إبداعي"></option><option value="مختصر"></option><option value="عربي"></option><option value="إنجليزي"></option></datalist></div>
+<div class="input-group"><input type="text" id="platform" list="platform-list" placeholder="🌍 المنصة التي سيُستخدم فيها المشروع"><datalist id="platform-list"><option value="موقع إلكتروني"></option><option value="تطبيق موبايل"></option><option value="متجر إلكتروني"></option><option value="شركة ناشئة"></option></datalist></div>
+
+            <button type="button" onclick="generateContent()">✨ ✨ توليد الاسم</button>
+        </form>
+
+        <h2>📌 النتيجة:</h2>
+        <div id="projectNameOutput" class="result-box">🔍 سيتم عرض النتيجة هنا...</div>
+    </section>
+
+    <script>
+        async function generateContent() {
+            document.getElementById("projectNameOutput").innerText = "⏳ جاري التوليد...";
+
+            let inputs = {}
+            inputs["projectDescription"] = document.getElementById("projectDescription").value.trim();
+            inputs["industry"] = document.getElementById("industry").value.trim();
+            inputs["style"] = document.getElementById("style").value.trim();
+            inputs["platform"] = document.getElementById("platform").value.trim();
+            
+
+            let prompt = `أنا أحتاج إلى اسم لمشروع في مجال {industry}. المشروع يركز على {projectDescription}. الاسم سيُستخدم في {platform}. أريد اسمًا {style} واقترح 3 خيارات مبتكرة.`;
+            Object.keys(inputs).forEach(key => {
+                prompt = prompt.replace(`{${key}}`, inputs[key]);
+            });
+
+            try {
+                const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: prompt }],
+                    max_tokens: 400
+                }, {
+                    headers: {
+                        "Authorization": "Bearer YOUR_OPENAI_API_KEY",
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                document.getElementById("projectNameOutput").innerText = response.data.choices[0].message.content.trim();
+            } catch (error) {
+                document.getElementById("projectNameOutput").innerText = "❌ حدث خطأ أثناء التوليد، حاول مرة أخرى.";
+            }
+        }
+    </script>
+
+    <footer>
+        <p>© 2025 كومة - جميع الحقوق محفوظة</p>
+    </footer>
+</body>
+</html>

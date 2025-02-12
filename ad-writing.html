@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✍️ كتابة إعلان تسويقي</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="كومة">
+        </div>
+    </header>
+
+    <section class="service">
+        <h1>✍️ كتابة إعلان تسويقي</h1>
+        <p>ادخل تفاصيل المنتج والجمهور واحصل على إعلان احترافي!</p>
+
+        <form id="adWritingOutputForm">
+            <div class="input-group"><input type="text" id="product" list="product-list" placeholder="🛍️ نوع المنتج / الخدمة"><datalist id="product-list"><option value="دورة تدريبية"></option><option value="تطبيق إلكتروني"></option><option value="متجر إلكتروني"></option><option value="استشارة أعمال"></option></datalist></div>
+<div class="input-group"><input type="text" id="audience" list="audience-list" placeholder="🎯 الجمهور المستهدف"><datalist id="audience-list"><option value="أصحاب المشاريع"></option><option value="الطلاب"></option><option value="الشركات الصغيرة"></option><option value="المستقلين"></option></datalist></div>
+<div class="input-group"><input type="text" id="painPoint" list="painPoint-list" placeholder="⚡ المشكلة التي يحلها المنتج"><datalist id="painPoint-list"><option value="قلة المبيعات"></option><option value="ضعف التفاعل"></option><option value="صعوبة التسويق"></option><option value="نقص الوعي بالعلامة التجارية"></option></datalist></div>
+<div class="input-group"><input type="text" id="usp" list="usp-list" placeholder="⭐ نقطة البيع الفريدة"><datalist id="usp-list"><option value="أرخص سعر"></option><option value="أسرع خدمة"></option><option value="جودة عالية"></option><option value="دعم فني مستمر"></option></datalist></div>
+<div class="input-group"><input type="text" id="offer" list="offer-list" placeholder="🔥 العرض الخاص"><datalist id="offer-list"><option value="خصم 30%"></option><option value="شحن مجاني"></option><option value="هدية مجانية"></option><option value="اشتراك مجاني لفترة محدودة"></option></datalist></div>
+<div class="input-group"><input type="text" id="platform" list="platform-list" placeholder="📢 المنصة الإعلانية"><datalist id="platform-list"><option value="فيسبوك"></option><option value="إنستغرام"></option><option value="جوجل إعلانات"></option><option value="تيك توك"></option></datalist></div>
+
+            <button type="button" onclick="generateContent()">✨ ✨ إنشاء الإعلان</button>
+        </form>
+
+        <h2>📌 النتيجة:</h2>
+        <div id="adWritingOutput" class="result-box">🔍 سيتم عرض النتيجة هنا...</div>
+    </section>
+
+    <script>
+        async function generateContent() {
+            document.getElementById("adWritingOutput").innerText = "⏳ جاري التوليد...";
+
+            let inputs = {}
+            inputs["product"] = document.getElementById("product").value.trim();
+            inputs["audience"] = document.getElementById("audience").value.trim();
+            inputs["painPoint"] = document.getElementById("painPoint").value.trim();
+            inputs["usp"] = document.getElementById("usp").value.trim();
+            inputs["offer"] = document.getElementById("offer").value.trim();
+            inputs["platform"] = document.getElementById("platform").value.trim();
+            
+
+            let prompt = `أريد إعلانًا تسويقيًا لمنتج {product} يستهدف {audience}. المنتج او الخدمة يحل مشكلة {painPoint} ويتميز بـ {usp}. سيتم نشر الإعلان على {platform}. استخدم نبرة جذابة واجعل الإعلان احترافيًا.`;
+            Object.keys(inputs).forEach(key => {
+                prompt = prompt.replace(`{${key}}`, inputs[key]);
+            });
+
+            try {
+                const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: prompt }],
+                    max_tokens: 400
+                }, {
+                    headers: {
+                        "Authorization": "Bearer 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",
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                document.getElementById("adWritingOutput").innerText = response.data.choices[0].message.content.trim();
+            } catch (error) {
+                document.getElementById("adWritingOutput").innerText = "❌ حدث خطأ أثناء التوليد، حاول مرة أخرى.";
+            }
+        }
+    </script>
+
+    <footer>
+        <p>© 2025 كومة - جميع الحقوق محفوظة</p>
+    </footer>
+</body>
+</html>

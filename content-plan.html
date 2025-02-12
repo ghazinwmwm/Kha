@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📆 كتابة خطة محتوى</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="كومة">
+        </div>
+    </header>
+
+    <section class="service">
+        <h1>📆 كتابة خطة محتوى</h1>
+        <p>ادخل مجال عملك والجمهور المستهدف واحصل على خطة نشر متكاملة!</p>
+
+        <form id="contentPlanOutputForm">
+            <div class="input-group"><input type="text" id="industry" list="industry-list" placeholder="📚 مجال العمل"><datalist id="industry-list"><option value="التسويق الرقمي"></option><option value="اللياقة البدنية"></option><option value="التعليم"></option><option value="الأعمال"></option><option value="الصحة"></option></datalist></div>
+<div class="input-group"><input type="text" id="audience" list="audience-list" placeholder="👥 الجمهور المستهدف"><datalist id="audience-list"><option value="رواد الأعمال"></option><option value="الطلاب"></option><option value="المدربين"></option><option value="المستقلين"></option></datalist></div>
+<div class="input-group"><input type="text" id="contentType" list="contentType-list" placeholder="🎭 نوع المحتوى"><datalist id="contentType-list"><option value="مقالات"></option><option value="ريلز"></option><option value="بوستات"></option><option value="ستوريهات"></option></datalist></div>
+<div class="input-group"><input type="text" id="duration" list="duration-list" placeholder="🗓️ مدة الخطة"><datalist id="duration-list"><option value="7 أيام"></option><option value="30 يوم"></option><option value="3 أشهر"></option></datalist></div>
+<div class="input-group"><input type="text" id="goal" list="goal-list" placeholder="🎯 الهدف من المحتوى"><datalist id="goal-list"><option value="زيادة المتابعين"></option><option value="بناء الثقة"></option><option value="تحقيق المبيعات"></option></datalist></div>
+<div class="input-group"><input type="text" id="platform" list="platform-list" placeholder="📱 المنصة التي سينشر عليها المحتوى"><datalist id="platform-list"><option value="إنستغرام"></option><option value="تيك توك"></option><option value="يوتيوب"></option><option value="فيسبوك"></option></datalist></div>
+
+            <button type="button" onclick="generateContent()">✨ ✨ توليد الخطة</button>
+        </form>
+
+        <h2>📌 النتيجة:</h2>
+        <div id="contentPlanOutput" class="result-box">🔍 سيتم عرض النتيجة هنا...</div>
+    </section>
+
+    <script>
+        async function generateContent() {
+            document.getElementById("contentPlanOutput").innerText = "⏳ جاري التوليد...";
+
+            let inputs = {}
+            inputs["industry"] = document.getElementById("industry").value.trim();
+            inputs["audience"] = document.getElementById("audience").value.trim();
+            inputs["contentType"] = document.getElementById("contentType").value.trim();
+            inputs["duration"] = document.getElementById("duration").value.trim();
+            inputs["goal"] = document.getElementById("goal").value.trim();
+            inputs["platform"] = document.getElementById("platform").value.trim();
+            
+
+            let prompt = `أنا أحتاج إلى خطة محتوى اكتبلي عنوان كل منشور ومحتواه وموعد النشر لمجال {industry} تستهدف {audience}. نوع المحتوى {contentType}، وستُستخدم على {platform}. مدة الخطة {duration}، والهدف هو {goal}. قدم لي خطة مفصلة.`;
+            Object.keys(inputs).forEach(key => {
+                prompt = prompt.replace(`{${key}}`, inputs[key]);
+            });
+
+            try {
+                const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+                    model: "gpt-3.5-turbo",
+                    messages: [{ role: "user", content: prompt }],
+                    max_tokens: 700
+                }, {
+                    headers: {
+                        "Authorization": "Bearer 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",
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                document.getElementById("contentPlanOutput").innerText = response.data.choices[0].message.content.trim();
+            } catch (error) {
+                document.getElementById("contentPlanOutput").innerText = "❌ حدث خطأ أثناء التوليد، حاول مرة أخرى.";
+            }
+        }
+    </script>
+
+    <footer>
+        <p>© 2025 كومة - جميع الحقوق محفوظة</p>
+    </footer>
+</body>
+</html>
