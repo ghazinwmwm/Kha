@@ -3,108 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>كومة - منتجات رقمية</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>مولد الشهادات</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .certificate {
+            border: 2px solid #4CAF50;
+            padding: 30px;
+            margin-top: 30px;
+            background-color: #fff;
+            text-align: center;
+            position: relative;
+            background-image: url('https://img.freepik.com/free-vector/white-elegant-texture-background-style_23-2148432200.jpg');
+            background-size: cover;
+        }
+        .certificate h2 {
+            color: #4CAF50;
+        }
+        .certificate-logo {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+        .signature-area {
+            margin-top: 50px;
+        }
+        .signature-box {
+            display: inline-block;
+            width: 40%;
+            text-align: center;
+            margin: 0 5%;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="logo.png" alt="كومة">
+    <div class="container">
+        <h1>مولد الشهادات الإلكترونية</h1>
+        
+        <div class="form-group">
+            <label for="name">اسم المستلم:</label>
+            <input type="text" id="name" placeholder="أدخل الاسم الكامل">
         </div>
-        <nav>
-            <ul>
-                <li><a href="#about">عن كومة</a></li>
-                <li><a href="#products">منتجاتنا</a></li>
-                <li><a href="#contact">تواصل معنا</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <h1>🚀 كومة – لأن الشغل الذكي يحتاج أدوات أذكى!</h1>
-        <p>اكتشف مكتبة المنتجات الرقمية اللي تخليك تشتغل بطريقة أسرع، أذكى، وأكثر احترافية! 📚💡</p>
-        <a href="#products" class="btn">اكتشف المنتجات</a>
-    </section>
-
-<section id="services" class="services">
-    <h2>🛠️ خدمات كومة الذكية</h2>
-    <div class="service-list">
-        <a href="generate-project-name.html" class="btn">🚀 توليد اسم مشروع</a>
-        <a href="ad-writing.html" class="btn">✍️ كتابة إعلانات</a>
-        <a href="content-plan.html" class="btn">📆 خطة محتوى ونشر</a>
-        <a href="ad-plan.html" class="btn">📢 خطة إعلانية</a>
-        <a href="business-plan.html" class="btn">📋 خطة عمل</a>
-    </div>
-</section>
-
-
-    <section id="about" class="about">
-        <h2>شنو هي كومة؟ 🤔</h2>
-        <p>كومة مشروع يوفر لك **كتب، كورسات، أدوات وملفات رقمية** تساعدك تطوّر شغلك وتتعلم بشكل أسرع! ✅</p>
-    </section>
-
-<section id="services" class="services">
-    <h2>🛠️ خدمات كومة الذكية</h2>
-    <div class="service-list">
-        <a href="generate-project-name.html" class="btn">🚀 توليد اسم مشروع</a>
-        <a href="ad-writing.html" class="btn">✍️ كتابة إعلانات</a>
-        <a href="content-plan.html" class="btn">📆 خطة محتوى ونشر</a>
-        <a href="ad-plan.html" class="btn">📢 خطة إعلانية</a>
-        <a href="business-plan.html" class="btn">📋 خطة عمل</a>
-    </div>
-</section>
-
-
-    <section id="products" class="products">
-        <h2>📦 منتجات كومة</h2>
-        <p>كلشي تحتاجه لإنجاز شغلك بسهولة، بدون تعب البحث والتجربة!</p>
-        <div class="product">
-            <h3>📖 دليل التسويق عبر الواتساب</h3>
-            <p>استراتيجيات عملية لبناء قاعدة عملاء 🟢</p>
-            <a href="product-whatsapp.html" class="btn">المزيد عن المنتج</a>
+        
+        <div class="form-group">
+            <label for="course">اسم الدورة/البرنامج:</label>
+            <input type="text" id="course" placeholder="أدخل اسم الدورة">
         </div>
-        <div class="product">
-            <h3>🛠️ أدوات وأتمتة</h3>
-            <p>ملفات وأدوات جاهزة تسرّع شغلك وتقلل الأخطاء! ⚡</p>
+        
+        <div class="form-group">
+            <label for="date">تاريخ الإصدار:</label>
+            <input type="date" id="date">
         </div>
-        <div class="product">
-            <h3>🎓 كورسات متخصصة</h3>
-            <p>تعلم أسرع الطرق لإنجاح مشاريعك الرقمية! 🚀</p>
+        
+        <div class="form-group">
+            <label for="description">وصف الشهادة:</label>
+            <textarea id="description" rows="3" placeholder="أدخل وصف الشهادة"></textarea>
         </div>
-    </section>
-
-<section id="services" class="services">
-    <h2>🛠️ خدمات كومة الذكية</h2>
-    <div class="service-list">
-        <a href="generate-project-name.html" class="btn">🚀 توليد اسم مشروع</a>
-        <a href="ad-writing.html" class="btn">✍️ كتابة إعلانات</a>
-        <a href="content-plan.html" class="btn">📆 خطة محتوى ونشر</a>
-        <a href="ad-plan.html" class="btn">📢 خطة إعلانية</a>
-        <a href="business-plan.html" class="btn">📋 خطة عمل</a>
+        
+        <button onclick="generateCertificate()">إنشاء الشهادة</button>
+        
+        <div id="certificatePreview" class="certificate" style="display: none;">
+            <img src="https://via.placeholder.com/150x150?text=شعار" alt="شعار المؤسسة" class="certificate-logo">
+            <h2>شهادة تقدير</h2>
+            <p>تقدم هذه الشهادة إلى:</p>
+            <h3 id="certName"></h3>
+            <p>لإتمامه/ا بنجاح برنامج:</p>
+            <h4 id="certCourse"></h4>
+            <p id="certDescription"></p>
+            <p>بتاريخ: <span id="certDate"></span></p>
+            <div class="signature-area">
+                <div class="signature-box">
+                    <hr>
+                    <p>التوقيع</p>
+                </div>
+                <div class="signature-box">
+                    <hr>
+                    <p>ختم المؤسسة</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="downloadSection" style="margin-top: 20px; display: none; text-align: center;">
+            <button onclick="downloadAsImage()">حفظ الشهادة كصورة</button>
+            <button onclick="printCertificate()">طباعة الشهادة</button>
+        </div>
     </div>
-</section>
 
-
-    <section id="contact" class="contact">
-        <h2>📩 تواصل ويانا</h2>
-        <p>إذا عندك أي استفسار، لا تتردد تتواصل ويانا عبر الإنستغرام أو البريد الإلكتروني.</p>
-        <a href="https://www.instagram.com/koma_dig" class="btn">تابعنا على إنستغرام</a>
-    </section>
-
-<section id="services" class="services">
-    <h2>🛠️ خدمات كومة الذكية</h2>
-    <div class="service-list">
-        <a href="generate-project-name.html" class="btn">🚀 توليد اسم مشروع</a>
-        <a href="ad-writing.html" class="btn">✍️ كتابة إعلانات</a>
-        <a href="content-plan.html" class="btn">📆 خطة محتوى ونشر</a>
-        <a href="ad-plan.html" class="btn">📢 خطة إعلانية</a>
-        <a href="business-plan.html" class="btn">📋 خطة عمل</a>
-    </div>
-</section>
-
-
-    <footer>
-        <p>© 2025 كومة - جميع الحقوق محفوظة</p>
-    </footer>
+    <!-- إضافة مكتبة html2canvas -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <script>
+        function generateCertificate() {
+            const name = document.getElementById('name').value;
+            const course = document.getElementById('course').value;
+            const date = document.getElementById('date').value;
+            const description = document.getElementById('description').value;
+            
+            if (!name || !course || !date) {
+                alert('الرجاء إدخال جميع الحقول المطلوبة');
+                return;
+            }
+            
+            document.getElementById('certName').textContent = name;
+            document.getElementById('certCourse').textContent = course;
+            document.getElementById('certDescription').textContent = description;
+            
+            const formattedDate = new Date(date).toLocaleDateString('ar-EG');
+            document.getElementById('certDate').textContent = formattedDate;
+            
+            document.getElementById('certificatePreview').style.display = 'block';
+            document.getElementById('downloadSection').style.display = 'block';
+        }
+        
+        function downloadAsImage() {
+            const certificateElement = document.getElementById('certificatePreview');
+            
+            // استخدام html2canvas لتحويل الشهادة إلى صورة
+            html2canvas(certificateElement, {
+                scale: 2, // زيادة الدقة
+                logging: false,
+                useCORS: true,
+                allowTaint: true
+            }).then(canvas => {
+                // تحويل Canvas إلى صورة
+                const image = canvas.toDataURL('image/png');
+                
+                // إنشاء رابط للتحميل
+                const link = document.createElement('a');
+                link.download = 'شهادة_' + document.getElementById('name').value + '.png';
+                link.href = image;
+                
+                // محاكاة النقر على الرابط لبدء التحميل
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // بالنسبة للأجهزة المحمولة، يمكن إظهار رسالة تأكيد
+                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                    alert('تم حفظ الشهادة في معرض الصور');
+                }
+            });
+        }
+        
+        function printCertificate() {
+            window.print();
+        }
+    </script>
 </body>
 </html>
