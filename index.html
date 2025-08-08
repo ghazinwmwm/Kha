@@ -1,196 +1,175 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مولد الشهادات</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            margin: 5px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .certificate {
-            border: 2px solid #4CAF50;
-            padding: 30px;
-            margin-top: 30px;
-            background-color: #fff;
-            text-align: center;
-            position: relative;
-            background-image: url('https://img.freepik.com/free-vector/white-elegant-texture-background-style_23-2148432200.jpg');
-            background-size: cover;
-        }
-        .certificate h2 {
-            color: #4CAF50;
-        }
-        .certificate-logo {
-            max-width: 150px;
-            margin-bottom: 20px;
-        }
-        .signature-area {
-            margin-top: 50px;
-        }
-        .signature-box {
-            display: inline-block;
-            width: 40%;
-            text-align: center;
-            margin: 0 5%;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>معايدة خاصة</title>
+
+<!-- استيراد خط Cairo -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet" />
+
+<style>
+  body {
+    margin: 0;
+    background-color: #E6E6FA; /* لافندر ثابت */
+    font-family: "Cairo", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    overflow-x: hidden;
+  }
+  main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  h1 {
+    color: #4B0082; /* بنفسجي غامق */
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    margin: 0;
+  }
+  button {
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    border: none;
+    border-radius: 8px;
+    background-color: #9370DB;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    font-family: "Cairo", sans-serif;
+  }
+  button:active {
+    transform: scale(0.95);
+  }
+  .hearts {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .heart {
+    position: absolute;
+    color: #9370DB; /* قلب لافندر غامق */
+    animation: fall 5s linear infinite;
+    user-select: none;
+  }
+  @keyframes fall {
+    0% {
+      transform: translateY(-10%) rotate(0deg);
+    }
+    100% {
+      transform: translateY(110vh) rotate(360deg);
+    }
+  }
+
+  /* قسم جديد تحت الصفحة */
+  #loveMessage {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: #6a0dad;
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 20px;
+  }
+
+  /* زر التحكم بالموسيقى */
+  #musicControl {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background-color: #9370DB;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>مولد الشهادات الإلكترونية</h1>
-        
-        <div class="form-group">
-            <label for="name">اسم المستلم:</label>
-            <input type="text" id="name" placeholder="أدخل الاسم الكامل">
-        </div>
-        
-        <div class="form-group">
-            <label for="course">اسم الدورة/البرنامج:</label>
-            <input type="text" id="course" placeholder="أدخل اسم الدورة">
-        </div>
-        
-        <div class="form-group">
-            <label for="date">تاريخ الإصدار:</label>
-            <input type="date" id="date">
-        </div>
-        
-        <div class="form-group">
-            <label for="description">وصف الشهادة:</label>
-            <textarea id="description" rows="3" placeholder="أدخل وصف الشهادة"></textarea>
-        </div>
-        
-        <button onclick="generateCertificate()">إنشاء الشهادة</button>
-        
-        <div id="certificatePreview" class="certificate" style="display: none;">
-            <img src="https://via.placeholder.com/150x150?text=شعار" alt="شعار المؤسسة" class="certificate-logo">
-            <h2>شهادة تقدير</h2>
-            <p>تقدم هذه الشهادة إلى:</p>
-            <h3 id="certName"></h3>
-            <p>لإتمامه/ا بنجاح برنامج:</p>
-            <h4 id="certCourse"></h4>
-            <p id="certDescription"></p>
-            <p>بتاريخ: <span id="certDate"></span></p>
-            <div class="signature-area">
-                <div class="signature-box">
-                    <hr>
-                    <p>التوقيع</p>
-                </div>
-                <div class="signature-box">
-                    <hr>
-                    <p>ختم المؤسسة</p>
-                </div>
-            </div>
-        </div>
-        
-        <div id="downloadSection" style="margin-top: 20px; display: none; text-align: center;">
-            <button onclick="downloadAsImage()">حفظ الشهادة كصورة</button>
-            <button onclick="printCertificate()">طباعة الشهادة</button>
-        </div>
-    </div>
+  <button id="musicControl" title="تشغيل / إيقاف الموسيقى">🔈</button>
 
-    <!-- إضافة مكتبة html2canvas -->
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    
-    <script>
-        function generateCertificate() {
-            const name = document.getElementById('name').value;
-            const course = document.getElementById('course').value;
-            const date = document.getElementById('date').value;
-            const description = document.getElementById('description').value;
-            
-            if (!name || !course || !date) {
-                alert('الرجاء إدخال جميع الحقول المطلوبة');
-                return;
-            }
-            
-            document.getElementById('certName').textContent = name;
-            document.getElementById('certCourse').textContent = course;
-            document.getElementById('certDescription').textContent = description;
-            
-            const formattedDate = new Date(date).toLocaleDateString('ar-EG');
-            document.getElementById('certDate').textContent = formattedDate;
-            
-            document.getElementById('certificatePreview').style.display = 'block';
-            document.getElementById('downloadSection').style.display = 'block';
-        }
-        
-        function downloadAsImage() {
-            const certificateElement = document.getElementById('certificatePreview');
-            
-            // استخدام html2canvas لتحويل الشهادة إلى صورة
-            html2canvas(certificateElement, {
-                scale: 2, // زيادة الدقة
-                logging: false,
-                useCORS: true,
-                allowTaint: true
-            }).then(canvas => {
-                // تحويل Canvas إلى صورة
-                const image = canvas.toDataURL('image/png');
-                
-                // إنشاء رابط للتحميل
-                const link = document.createElement('a');
-                link.download = 'شهادة_' + document.getElementById('name').value + '.png';
-                link.href = image;
-                
-                // محاكاة النقر على الرابط لبدء التحميل
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // بالنسبة للأجهزة المحمولة، يمكن إظهار رسالة تأكيد
-                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                    alert('تم حفظ الشهادة في معرض الصور');
-                }
-            });
-        }
-        
-        function printCertificate() {
-            window.print();
-        }
-    </script>
+  <main id="mainSection">
+    <h1>💖 كل عام وأنتِ عيدي 💖</h1>
+    <button id="scrollDownBtn">دوسي هين</button>
+  </main>
+
+  <section id="loveMessage">
+    <p>أحبك كل يوم أكثر ❤️، وكل لحظة وياك هي عيد ماله مثيل.</p>
+    <button id="scrollUpBtn">رجعيلي لفوق</button>
+  </section>
+
+  <div class="hearts" id="hearts"></div>
+
+  <audio id="bgMusic" src="yeken.mp3" loop></audio>
+
+  <script>
+    const music = document.getElementById('bgMusic');
+    const musicControl = document.getElementById('musicControl');
+    let isPlaying = false;
+
+    // تشغيل الموسيقى تلقائيًا مع محاولة تجاوز الحظر في بعض المتصفحات
+    window.addEventListener('load', () => {
+      music.play().then(() => {
+        isPlaying = true;
+        musicControl.textContent = '🔊';
+      }).catch(() => {
+        musicControl.textContent = '🔈';
+      });
+    });
+
+    musicControl.addEventListener('click', () => {
+      if (isPlaying) {
+        music.pause();
+        musicControl.textContent = '🔈';
+      } else {
+        music.play();
+        musicControl.textContent = '🔊';
+      }
+      isPlaying = !isPlaying;
+    });
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "💜"; // قلب بنفسجي
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 15 + 15 + "px";
+      heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+      document.getElementById("hearts").appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 300);
+
+    document.getElementById("scrollDownBtn").addEventListener("click", () => {
+      document.getElementById("loveMessage").scrollIntoView({
+        behavior: "smooth",
+      });
+    });
+
+    document.getElementById("scrollUpBtn").addEventListener("click", () => {
+      document.getElementById("mainSection").scrollIntoView({
+        behavior: "smooth",
+      });
+    });
+  </script>
 </body>
 </html>
