@@ -1,175 +1,328 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>معايدة خاصة</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>تأثير الكشف السلس - النص يختفي قبل التبديل</title>
+    <style>
+        :root { --bg:#000; --fg:#e9eef1; }
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            margin: 0; background: var(--bg); color: var(--fg);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic UI", Tahoma, sans-serif;
+            overscroll-behavior-y: contain;
+            line-height: 1.6;
+        }
 
-<!-- استيراد خط Cairo -->
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet" />
+        #hero {
+            position: fixed; 
+            inset: 0; 
+            display: grid; 
+            place-items: center;
+            pointer-events: none;
+            z-index: 10;
+        }
 
-<style>
-  body {
-    margin: 0;
-    background-color: #E6E6FA; /* لافندر ثابت */
-    font-family: "Cairo", sans-serif;
-    font-weight: bold;
-    text-align: center;
-    overflow-x: hidden;
-  }
-  main {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  h1 {
-    color: #4B0082; /* بنفسجي غامق */
-    font-size: clamp(1.8rem, 5vw, 3rem);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-    margin: 0;
-  }
-  button {
-    margin-top: 20px;
-    padding: 12px 24px;
-    font-size: clamp(1rem, 3vw, 1.3rem);
-    border: none;
-    border-radius: 8px;
-    background-color: #9370DB;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    font-family: "Cairo", sans-serif;
-  }
-  button:active {
-    transform: scale(0.95);
-  }
-  .hearts {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 10;
-  }
-  .heart {
-    position: absolute;
-    color: #9370DB; /* قلب لافندر غامق */
-    animation: fall 5s linear infinite;
-    user-select: none;
-  }
-  @keyframes fall {
-    0% {
-      transform: translateY(-10%) rotate(0deg);
-    }
-    100% {
-      transform: translateY(110vh) rotate(360deg);
-    }
-  }
+        #heroText{
+            --p: 0;
+            --feather: 25vw;     
+            font-size: clamp(28px, 9vw, 110px);
+            line-height: 1.2; 
+            text-align: center; 
+            padding: 0 6vw;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 
-  /* قسم جديد تحت الصفحة */
-  #loveMessage {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    color: #6a0dad;
-    padding: 20px;
-    box-sizing: border-box;
-    gap: 20px;
-  }
+            opacity: var(--p); /* تم التعديل ليجعل النص يختفي تمامًا عندما --p = 0 */
 
-  /* زر التحكم بالموسيقى */
-  #musicControl {
-    position: fixed;
-    top: 10px;
-    left: 10px;
-    background-color: #9370DB;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 20;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-</style>
+            --cut: calc(100% - (var(--p) * 100%));
+            -webkit-mask-image: linear-gradient(
+                to right,
+                rgba(0,0,0,0) 0%,
+                rgba(0,0,0,0) calc(var(--cut) - var(--feather)),
+                rgba(0,0,0,1) var(--cut),
+                rgba(0,0,0,1) 100%
+            );
+                    mask-image: linear-gradient(
+                to right,
+                rgba(0,0,0,0) 0%,
+                rgba(0,0,0,0) calc(var(--cut) - var(--feather)),
+                rgba(0,0,0,1) var(--cut),
+                rgba(0,0,0,1) 100%
+            );
+
+            transition: opacity 0.8s ease, -webkit-mask-image 0.8s ease, mask-image 0.8s ease;
+        }
+
+        main { position: relative; }
+        .step {
+            height: 100vh; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center;
+            color: transparent; 
+            user-select: none;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #888;
+            font-size: 16px;
+            z-index: 100;
+            background: rgba(0,0,0,0.7);
+            padding: 8px 15px;
+            border-radius: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0) translateX(-50%);}
+            40% {transform: translateY(-10px) translateX(-50%);}
+            60% {transform: translateY(-5px) translateX(-50%);}
+        }
+
+        /* أنماط الصفحة السماوية */
+        .sky-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(to bottom, #d6c4ff 0%, #b19fff 40%, #9675e3 100%);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .yaqeen-text {
+            font-size: clamp(3rem, 15vw, 10rem);
+            font-weight: bold;
+            color: #5a4a9c;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic UI", Tahoma, sans-serif;
+            z-index: 2;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
+            animation: shoot linear infinite;
+        }
+
+        @keyframes shoot {
+            0% { 
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+                opacity: 0;
+            }
+            20% { opacity: 1; }
+            100% { 
+                transform: translateX(100vw) translateY(100vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        /* أنماط الصفحة الثالثة */
+        .third-page {
+            background: linear-gradient(to bottom, #9675e3 0%, #7a5ccc 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .third-page-content {
+            max-width: 800px;
+            color: white;
+        }
+
+        .third-page h2 {
+            font-size: clamp(2rem, 8vw, 4rem);
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .third-page p {
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            line-height: 1.6;
+            color: #f0e6ff;
+        }
+    </style>
 </head>
 <body>
-  <button id="musicControl" title="تشغيل / إيقاف الموسيقى">🔈</button>
+    <div class="scroll-indicator">انزلي جوة يحلوة بس على كيفج انزلي مو بسرعة ▼</div>
+    <div id="hero"><div id="heroText" aria-live="polite"></div></div>
 
-  <main id="mainSection">
-    <h1>💖 كل عام وأنتِ عيدي 💖</h1>
-    <button id="scrollDownBtn">دوسي هين</button>
-  </main>
+    <main id="steps">
+        <section class="step" data-word="منو..."></section>
+        <section class="step" data-word="احلى"></section>
+        <section class="step" data-word="بنوتة..."></section>
+        <section class="step" data-word="بالدنيا كلها!"></section>
+        <section class="step" data-word="انت🫂"></section>
+        
+        <!-- الصفحة السماوية -->
+        <section class="step" data-word="">
+            <div class="sky-container">
+                <div class="yaqeen-text">يقين</div>
+                <!-- النجوم والشهب سيتم إنشاؤها بواسطة JavaScript -->
+            </div>
+        </section>
+        
+        <!-- الصفحة الثالثة -->
+        <section class="step third-page" data-word="">
+            <div class="third-page-content">
+                <h2>يا الله كافي عود لمن اكملها</h2>
+                <p>حبيبي لا تبقين ضايجة على شاني 🥹</p>
+            </div>
+        </section>
+    </main>
 
-  <section id="loveMessage">
-    <p>أحبك كل يوم أكثر ❤️، وكل لحظة وياك هي عيد ماله مثيل.</p>
-    <button id="scrollUpBtn">رجعيلي لفوق</button>
-  </section>
+<script>
+(() => {
+    const steps  = Array.from(document.querySelectorAll('.step'));
+    const target = document.getElementById('heroText');
+    const scrollIndicator = document.querySelector('.scroll-indicator');
 
-  <div class="hearts" id="hearts"></div>
+    // حالة لتتبع ما إذا كان النص مخفيًا حاليًا
+    let isTextHidden = false;
+    // مؤقت للتحكم في انتقال النص
+    let textTransitionTimer = null;
+    
+    const progressInViewport = (el) => {
+        const r  = el.getBoundingClientRect();
+        const vh = window.innerHeight;
+        const centerEl = r.top + r.height/2;
+        const centerVp = vh / 2;
+        const d = Math.abs(centerEl - centerVp);
+        const radius = vh * 0.7;
+        let p = 1 - d / radius;
+        return Math.max(0, Math.min(1, p));
+    };
 
-  <audio id="bgMusic" src="yeken.mp3" loop></audio>
+    const easedProgress = (p) => {
+        const start = 0.1, end = 0.9;
+        if (p <= start) return 0;
+        if (p >= end)   return 1;
+        const t = (p - start) / (end - start);
+        return t < .5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2;
+    };
 
-  <script>
-    const music = document.getElementById('bgMusic');
-    const musicControl = document.getElementById('musicControl');
-    let isPlaying = false;
+    if (steps.length) target.textContent = steps[0].dataset.word || "";
+    let active = steps[0];
 
-    // تشغيل الموسيقى تلقائيًا مع محاولة تجاوز الحظر في بعض المتصفحات
-    window.addEventListener('load', () => {
-      music.play().then(() => {
-        isPlaying = true;
-        musicControl.textContent = '🔊';
-      }).catch(() => {
-        musicControl.textContent = '🔈';
-      });
-    });
+    const update = () => {
+        let best = active, bestRaw = -1;
+        for (const s of steps) {
+            const p = progressInViewport(s);
+            if (p > bestRaw) { bestRaw = p; best = s; }
+        }
+        
+        // إذا كان القسم النشط مختلف عن الأفضل وكان النص غير مخفي
+        if (best !== active && !isTextHidden) {
+            // إخفاء النص أولاً
+            target.style.setProperty('--p', 0);
+            isTextHidden = true;
+            
+            // بعد انتهاء animation الإخفاء، تغيير النص وإظهاره
+            if (textTransitionTimer) clearTimeout(textTransitionTimer);
+            textTransitionTimer = setTimeout(() => {
+                active = best;
+                target.textContent = active.dataset.word || "";
+                target.style.setProperty('--p', easedProgress(bestRaw).toFixed(4));
+                isTextHidden = false;
+            }, 800); // 800ms هو duration الـ transition في CSS
+        } 
+        // إذا كان النص غير مخفي، تحديث قيمة --p بشكل طبيعي
+        else if (!isTextHidden) {
+            target.style.setProperty('--p', easedProgress(bestRaw).toFixed(4));
+        }
+        
+        // إخفاء مؤشر التمرير عند التمرير لأسفل
+        if (window.scrollY > 100) {
+            scrollIndicator.style.opacity = '0';
+        } else {
+            scrollIndicator.style.opacity = '1';
+        }
+    };
 
-    musicControl.addEventListener('click', () => {
-      if (isPlaying) {
-        music.pause();
-        musicControl.textContent = '🔈';
-      } else {
-        music.play();
-        musicControl.textContent = '🔊';
-      }
-      isPlaying = !isPlaying;
-    });
-
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.textContent = "💜"; // قلب بنفسجي
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = Math.random() * 15 + 15 + "px";
-      heart.style.animationDuration = Math.random() * 3 + 3 + "s";
-      document.getElementById("hearts").appendChild(heart);
-      setTimeout(() => heart.remove(), 6000);
+    // إنشاء النجوم والشهب
+    function createStars() {
+        const skyContainer = document.querySelector('.sky-container');
+        
+        // إنشاء النجوم
+        for (let i = 0; i < 200; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            
+            // حجم عشوائي بين 1 و3 بكسل
+            const size = Math.random() * 2 + 1;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            
+            // موقع عشوائي
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            
+            // مدة وميض عشوائية
+            const duration = Math.random() * 5 + 3;
+            star.style.animationDuration = `${duration}s`;
+            
+            // تأخير عشوائي لبدء الوميض
+            star.style.animationDelay = `${Math.random() * 5}s`;
+            
+            skyContainer.appendChild(star);
+        }
+        
+        // إنشاء الشهب
+        for (let i = 0; i < 5; i++) {
+            const shootingStar = document.createElement('div');
+            shootingStar.classList.add('shooting-star');
+            
+            // طول وعرض عشوائي
+            const width = Math.random() * 100 + 50;
+            shootingStar.style.width = `${width}px`;
+            
+            // موقع بداية عشوائي
+            const startTop = Math.random() * 40;
+            shootingStar.style.top = `${startTop}%`;
+            shootingStar.style.left = `${Math.random() * 20}%`;
+            
+            // مدة عشوائية للشهاب
+            const duration = Math.random() * 3 + 2;
+            shootingStar.style.animationDuration = `${duration}s`;
+            
+            // تأخير عشوائي لبدء الشهاب
+            shootingStar.style.animationDelay = `${Math.random() * 10}s`;
+            
+            skyContainer.appendChild(shootingStar);
+        }
     }
-    setInterval(createHeart, 300);
 
-    document.getElementById("scrollDownBtn").addEventListener("click", () => {
-      document.getElementById("loveMessage").scrollIntoView({
-        behavior: "smooth",
-      });
-    });
-
-    document.getElementById("scrollUpBtn").addEventListener("click", () => {
-      document.getElementById("mainSection").scrollIntoView({
-        behavior: "smooth",
-      });
-    });
-  </script>
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    
+    // إنشاء النجوم بعد تحميل الصفحة
+    window.addEventListener('load', createStars);
+})();
+</script>
 </body>
 </html>
